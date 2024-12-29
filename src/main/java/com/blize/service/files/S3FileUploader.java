@@ -18,6 +18,9 @@ public class S3FileUploader implements FileUploader {
     @Value("${s3.endpoint}")
     private String endpoint;
 
+    @Value("${s3.publicEndpoint}")
+    private String publicEndpoint;
+
     @Value("${s3.bucketName}")
     private String bucketName;
 
@@ -58,6 +61,6 @@ public class S3FileUploader implements FileUploader {
 
         getS3Client().putObject(putObjectRequest, file);
 
-        return new FileInfo(endpoint+"/"+bucketName, toRootPath, toPath, toFileName, true);
+        return new FileInfo(publicEndpoint+"/"+bucketName, toRootPath, toPath, toFileName, true);
     }
 }

@@ -1,37 +1,34 @@
 package com.blize.service.files;
 
-import jakarta.servlet.ServletContext;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.ServletContextAware;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
 
 @Service
-public class FileService implements ServletContextAware {
-    private ServletContext servletContext;
+public class FileService {
+    private ApplicationContext applicationContext;
 
-    @Override
-    public void setServletContext(@NotNull ServletContext servletContext) {
-        this.servletContext = servletContext;
+    public FileService(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
-    public ServletContext getServletContext() {
-        return servletContext;
+    public ApplicationContext getApplicationContext() {
+        return applicationContext;
     }
 
     public String getResourcesPath() {
         return System.getProperty("user.dir")+"/src/main/resources";
     }
 
-    public File getFile(String fileName) {
-        return new File(getResourcesPath() + fileName);
+    public File getFile(String fileName) throws IOException {
+        return getApplicationContext().getResource("classpath:" + fileName).getFile();
     }
 
     public String getFileContent(String fileName) throws IOException {
-        return Files.readString(Paths.get(this.getResourcesPath() + fileName));
+        var inputStream = getApplicationContext().getResource("classpath:" + fileName).getInputStream();
+        return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
     }
 }

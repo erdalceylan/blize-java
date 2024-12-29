@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping("/jwt")
-    public Object detailByUsername() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+    public Object jwt() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         var user = userDetailsService.getSessionUser();
         return userService.createJwtToken(user);
     }

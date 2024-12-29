@@ -15,7 +15,9 @@ services:
     depends_on:
       - blize-java-mysql
       - blize-java-redis
-    command: java -jar app.jar
+    volumes:
+      - .:/app
+    command: java -jar build/libs/blize-java-SNAPSHOT.jar
 
     networks:
       - blize-network
